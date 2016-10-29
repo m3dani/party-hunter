@@ -54,10 +54,7 @@ public class PlaceImportBean implements Serializable{
 	}
 	
 	public void saveSelectedPlaces() {
-		selectedPlaceList.stream()
-			.forEach(p -> {
-				dao.save(p);
-			});
+		facebookManager.mergePlacesToDb(selectedPlaceList);
 	}
 
 }

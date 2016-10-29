@@ -67,6 +67,7 @@ public class FacebookManager {
 		return null;
 	}
 	
+	//TODO
 	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place){
 		try {
 			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, place, description"));
@@ -90,6 +91,7 @@ public class FacebookManager {
 		return phplace;
 	}
 	
+	//TODO
 	private PHEvent parseFbEvent(Event event, PHPlace place) {
 		PHEvent phevent = new PHEvent();
 		phevent.setPlace(place);
@@ -101,17 +103,21 @@ public class FacebookManager {
 		return phevent;
 	}
 	
-
-	
-	
-	public void mergePlaceToDb(List<PHPlace> placeList){
+	public void mergePlacesToDb(List<PHPlace> placeList){
 		Map<String, PHPlace> placeMap = dao.getAllPlacesMap();
 		placeList.stream()
 			.forEach(p -> {
 				if (placeMap.containsKey(p.getFacebookId())) {
-					
+					PHPlace exisitingPlace = placeMap.get(p.getFacebookId());
+					exisitingPlace.setName(p.getName());
+					exisitingPlace.setCity(p.getCity());
+					exisitingPlace.setCountry(p.getCountry());
+					exisitingPlace.setLatitude(p.getLatitude());
+					exisitingPlace.setLongitude(p.getLongitude());
+					exisitingPlace.setStreet(p.getStreet());
+					dao.save(exisitingPlace);
 				} else {
-
+					dao.save(p);
 				}
 			});
 	}
