@@ -1,7 +1,5 @@
 package hu.bme.ph.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="category")
-public class Category implements Serializable {
+public class PHCategory implements PHEntity {
 
 	/**
 	 * 
@@ -27,6 +25,22 @@ public class Category implements Serializable {
 	
 	@Column(name="name")
 	private String name;
+
+	public Long getPkid() {
+		return pkid;
+	}
+
+	public void setPkid(Long pkid) {
+		this.pkid = pkid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	
 	

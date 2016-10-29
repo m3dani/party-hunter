@@ -1,6 +1,5 @@
 package hu.bme.ph.model;
 
-import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,10 +13,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="event")
-public class Event implements Serializable {
+public class PHEvent implements PHEntity {
 
 	/**
 	 * 
@@ -48,21 +48,6 @@ public class Event implements Serializable {
 	@Column(name="updated")
 	private String updated;
 	
-	@Column(name="longitude")
-	private String longitude;
-	
-	@Column(name="latitude")
-	private String latitude;
-	
-	@Column(name="street")
-	private String street;
-	
-	@Column(name="city")
-	private String city;
-	
-	@Column(name="country")
-	private String country;
-	
 	@Column(name="created")
 	private String created;
 	
@@ -75,9 +60,16 @@ public class Event implements Serializable {
 	@Column(name="end_time")
 	private String endTime;
 	
+	@Column(name="start_time")
+	private String startTime;
+	
 	@ManyToMany(cascade=CascadeType.ALL)  
     @JoinTable(name="event_category_map", joinColumns=@JoinColumn(name="event_pkid"), inverseJoinColumns=@JoinColumn(name="category_pkid"))
-	private Set<Category> category;
+	private Set<PHCategory> category;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "place_pkid")
+	private PHPlace place;
 
 	public Long getPkid() {
 		return pkid;
@@ -135,46 +127,6 @@ public class Event implements Serializable {
 		this.updated = updated;
 	}
 
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-
-	public String getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
 	public String getCreated() {
 		return created;
 	}
@@ -205,6 +157,22 @@ public class Event implements Serializable {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public PHPlace getPlace() {
+		return place;
+	}
+
+	public void setPlace(PHPlace place) {
+		this.place = place;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
 	

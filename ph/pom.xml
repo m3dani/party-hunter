@@ -5,6 +5,14 @@
     <artifactId>ph</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
+    
+    <repositories>
+		<repository>
+			<id>PrimeFaces repo</id>
+			<url>http://repository.primefaces.org/</url>
+		</repository>
+	</repositories>
+    
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -12,6 +20,28 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+		  <groupId>org.facebook4j</groupId>
+		  <artifactId>facebook4j-core</artifactId>
+		  <version>[2.4,)</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>${version.primefaces}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${version.primefaces-bootstrap}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${version.hibernate-core}</version>
+			<scope>provided</scope>
+		</dependency>
+		
     </dependencies>
     <build>
         <finalName>ph</finalName>
@@ -20,5 +50,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
+        <version.primefaces>5.3</version.primefaces>
+        <version.primefaces-bootstrap>1.0.10</version.primefaces-bootstrap>
+        <version.hibernate-core>4.3.10.Final</version.hibernate-core>
     </properties>
 </project>
