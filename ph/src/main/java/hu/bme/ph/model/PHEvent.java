@@ -25,7 +25,7 @@ public class PHEvent implements PHEntity {
 	private static final long serialVersionUID = 3527945853379638174L;
 
 	@Id
-	@SequenceGenerator(name="EVENT_PKID_GENERATOR", sequenceName="SEQ_EVENT_PKID")
+	@SequenceGenerator(name="EVENT_PKID_GENERATOR", sequenceName="EVENT_PKID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_PKID_GENERATOR")
 	@Column(unique=true, nullable=false, name="pkid")
 	private Long pkid;

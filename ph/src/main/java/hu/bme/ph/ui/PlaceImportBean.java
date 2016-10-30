@@ -30,10 +30,12 @@ public class PlaceImportBean implements Serializable{
 	@Inject
 	FacebookManager facebookManager;
 	
-	private Long longitude;
-	private Long latitude;
+	private Double longitude;
+	private Double latitude;
 	private int distance;
 	private String query;
+	
+
 	private String fields;
 	
 	private List<PHPlace> searchResultList;
@@ -56,5 +58,62 @@ public class PlaceImportBean implements Serializable{
 	public void saveSelectedPlaces() {
 		facebookManager.mergePlacesToDb(selectedPlaceList);
 	}
+	
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public String getFields() {
+		return fields;
+	}
+
+	public void setFields(String fields) {
+		this.fields = fields;
+	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+	
+	public List<PHPlace> getSearchResultList() {
+		return searchResultList;
+	}
+
+	public void setSearchResultList(List<PHPlace> searchResultList) {
+		this.searchResultList = searchResultList;
+	}
+
+	public List<PHPlace> getSelectedPlaceList() {
+		return selectedPlaceList;
+	}
+
+	public void setSelectedPlaceList(List<PHPlace> selectedPlaceList) {
+		this.selectedPlaceList = selectedPlaceList;
+	}
+
 
 }

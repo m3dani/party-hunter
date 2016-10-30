@@ -23,7 +23,7 @@ public class PHPreference implements PHEntity {
 	private static final long serialVersionUID = 6392740837704126991L;
 
 	@Id
-	@SequenceGenerator(name="PREFERENCE_PKID_GENERATOR", sequenceName="SEQ_PREFERENCE_PKID")
+	@SequenceGenerator(name="PREFERENCE_PKID_GENERATOR", sequenceName="PREFERENCE_PKID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PREFERENCE_PKID_GENERATOR")
 	@Column(unique=true, nullable=false, name="pkid")
 	private Long pkid;

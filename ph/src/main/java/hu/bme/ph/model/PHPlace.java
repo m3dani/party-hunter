@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="place")
 @NamedQueries({
-	@NamedQuery(name="PHPlace.findAll", query="SELECT p FROM PHPlace p"),
+	@NamedQuery(name="PHPlace.findAll", query="SELECT p FROM PHPlace p ORDER BY p.name"),
 })
 public class PHPlace implements PHEntity {
 
@@ -23,7 +23,7 @@ public class PHPlace implements PHEntity {
 	private static final long serialVersionUID = 8349053515992398803L;
 	
 	@Id
-	@SequenceGenerator(name="PLACE_PKID_GENERATOR", sequenceName="SEQ_PLACE_PKID")
+	@SequenceGenerator(name="PLACE_PKID_GENERATOR", sequenceName="PLACE_PKID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PLACE_PKID_GENERATOR")
 	@Column(unique=true, nullable=false, name="pkid")
 	private Long pkid;
@@ -44,10 +44,10 @@ public class PHPlace implements PHEntity {
 	private String country;
 	
 	@Column(name="latitude")
-	private Long latitude;
+	private Double latitude;
 	
 	@Column(name="longitude")
-	private Long longitude;
+	private Double longitude;
 
 	public Long getPkid() {
 		return pkid;
@@ -97,19 +97,19 @@ public class PHPlace implements PHEntity {
 		this.country = country;
 	}
 
-	public Long getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(Long latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public Long getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(Long longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 	

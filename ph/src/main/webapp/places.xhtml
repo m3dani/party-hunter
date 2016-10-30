@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+	<h:head>
+	</h:head>
+	
+	<h:body>
+		<h:form id="mainForm">
+			<p:growl id="msgs" showDetail="true"/>
+			
+			<p:dataTable id="placesTable" var="place" 
+				value="#{placesBean.placeList}" editable="true">
+				
+				<f:facet name="header">
+           			Places List
+       			</f:facet>
+				
+				<p:ajax event="rowEdit" listener="#{placesBean.onRowEdit}" update=":mainForm:msgs" />
+       			<p:ajax event="rowEditCancel" listener="#{placesBean.onRowCancel}" update=":mainForm:msgs" />
+       			
+       			<p:column headerText="Facebook id">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.facebookId}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.facebookId}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		 
+		       <p:column headerText="Name">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.name}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.name}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		       
+		       <p:column headerText="Country">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.country}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.country}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		       
+		       <p:column headerText="City">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.city}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.city}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		       
+		       <p:column headerText="Street">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.street}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.street}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		       
+		       <p:column headerText="Latitude">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.latitude}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.latitude}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		       
+		       <p:column headerText="Longitude">
+		           <p:cellEditor>
+		               <f:facet name="output"><h:outputText value="#{place.longitude}" /></f:facet>
+		               <f:facet name="input"><p:inputText value="#{place.longitude}" style="width:100%"/></f:facet>
+		           </p:cellEditor>
+		       </p:column>
+		       <p:column style="width:32px">
+		           <p:rowEditor />
+		       </p:column>
+		       
+		       <f:facet name="footer">
+           			<p:commandButton id="refreshButton" value="Refresh" actionListener="#{placesBean.refreshPlaces}" update=":mainForm:placesTable"/>
+       			</f:facet>
+       			
+			</p:dataTable>
+		</h:form>
+		
+		
+		
+		
+	</h:body>
+	
+</html>

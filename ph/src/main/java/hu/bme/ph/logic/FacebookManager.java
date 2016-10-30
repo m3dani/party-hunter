@@ -45,7 +45,7 @@ public class FacebookManager {
 		String permissions = dao.getPreference("permissions");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
-		  .setOAuthAppId(dao.getPreference(appId))
+		  .setOAuthAppId(appId)
 		  .setOAuthAppSecret(appSecret)
 		  .setOAuthAccessToken(appId + "|" + appSecret)
 		  .setOAuthPermissions(permissions);
@@ -56,7 +56,7 @@ public class FacebookManager {
 	}
 	
 	
-	public ResponseList<Place> requestPlaceFromFacebook(String query, Long latitude, Long longitude, int distance, String fields){
+	public ResponseList<Place> requestPlaceFromFacebook(String query, Double latitude, Double longitude, int distance, String fields){
 		try {
 			ResponseList<Place> response = facebook.searchPlaces(query, new GeoLocation(latitude, longitude), distance, new Reading().fields(fields));
 			return response;
@@ -85,8 +85,8 @@ public class FacebookManager {
 		phplace.setName(place.getName());
 		phplace.setCity(place.getLocation().getCity());
 		phplace.setCountry(place.getLocation().getCountry());
-		phplace.setLatitude(place.getLocation().getLatitude().longValue());
-		phplace.setLongitude(place.getLocation().getLongitude().longValue());
+		phplace.setLatitude(place.getLocation().getLatitude());
+		phplace.setLongitude(place.getLocation().getLongitude());
 		phplace.setStreet(place.getLocation().getStreet());
 		return phplace;
 	}

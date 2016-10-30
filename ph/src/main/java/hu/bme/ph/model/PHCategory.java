@@ -18,7 +18,7 @@ public class PHCategory implements PHEntity {
 	private static final long serialVersionUID = -2982079601623545154L;
 
 	@Id
-	@SequenceGenerator(name="CATEGORY_PKID_GENERATOR", sequenceName="SEQ_CATEGORY_PKID")
+	@SequenceGenerator(name="CATEGORY_PKID_GENERATOR", sequenceName="CATEGORY_PKID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CATEGORY_PKID_GENERATOR")
 	@Column(unique=true, nullable=false, name="pkid")
 	private Long pkid;
