@@ -3,20 +3,21 @@ package hu.bme.ph.model;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.*;
 
 @Entity
-@Table(name="event")
+@Table(name = "event")
 public class PHEvent implements PHEntity {
 
 	/**
@@ -25,48 +26,48 @@ public class PHEvent implements PHEntity {
 	private static final long serialVersionUID = 3527945853379638174L;
 
 	@Id
-	@SequenceGenerator(name="EVENT_PKID_GENERATOR", sequenceName="EVENT_PKID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_PKID_GENERATOR")
-	@Column(unique=true, nullable=false, name="pkid")
+	@SequenceGenerator(name = "EVENT_PKID_GENERATOR", sequenceName = "EVENT_PKID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EVENT_PKID_GENERATOR")
+	@Column(unique = true, nullable = false, name = "pkid")
 	private Long pkid;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="description")
+
+	@Column(name = "description")
 	private String description;
-	
-	@Column(name="image_normal")
+
+	@Column(name = "image_normal")
 	private String imageNormal;
-	
-	@Column(name="image_small")
+
+	@Column(name = "image_small")
 	private String imageSmall;
-	
-	@Column(name="image_cover_url")
+
+	@Column(name = "image_cover_url")
 	private String imageCoverUrl;
-	
-	@Column(name="updated")
+
+	@Column(name = "updated")
 	private String updated;
-	
-	@Column(name="created")
+
+	@Column(name = "created")
 	private String created;
-	
-	@Column(name="isHidden")
+
+	@Column(name = "is_hidden")
 	private Boolean isHidden;
 
-	@Column(name="attending_count")
+	@Column(name = "attending_count")
 	private int attendingCount;
-	
-	@Column(name="end_time")
+
+	@Column(name = "end_time")
 	private String endTime;
-	
-	@Column(name="start_time")
+
+	@Column(name = "start_time")
 	private String startTime;
-	
-	@ManyToMany(cascade=CascadeType.ALL)  
-    @JoinTable(name="event_category_map", joinColumns=@JoinColumn(name="event_pkid"), inverseJoinColumns=@JoinColumn(name="category_pkid"))
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "event_category_map", joinColumns = @JoinColumn(name = "event_pkid"), inverseJoinColumns = @JoinColumn(name = "category_pkid"))
 	private Set<PHCategory> category;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "place_pkid")
 	private PHPlace place;
@@ -175,9 +176,4 @@ public class PHEvent implements PHEntity {
 		this.startTime = startTime;
 	}
 
-	
-	
-	
-	
-	
 }

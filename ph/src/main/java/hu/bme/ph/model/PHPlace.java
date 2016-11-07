@@ -11,42 +11,40 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="place")
-@NamedQueries({
-	@NamedQuery(name="PHPlace.findAll", query="SELECT p FROM PHPlace p ORDER BY p.name"),
-})
+@Table(name = "place")
+@NamedQueries({ @NamedQuery(name = "PHPlace.findAll", query = "SELECT p FROM PHPlace p ORDER BY p.name"), })
 public class PHPlace implements PHEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8349053515992398803L;
-	
+
 	@Id
-	@SequenceGenerator(name="PLACE_PKID_GENERATOR", sequenceName="PLACE_PKID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PLACE_PKID_GENERATOR")
-	@Column(unique=true, nullable=false, name="pkid")
+	@SequenceGenerator(name = "PLACE_PKID_GENERATOR", sequenceName = "PLACE_PKID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PLACE_PKID_GENERATOR")
+	@Column(unique = true, nullable = false, name = "pkid")
 	private Long pkid;
-	
-	@Column(name="facebook_id")
+
+	@Column(name = "facebook_id")
 	private String facebookId;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@Column(name="city")
+
+	@Column(name = "city")
 	private String city;
-	
-	@Column(name="street")
+
+	@Column(name = "street")
 	private String street;
-	
-	@Column(name="country")
+
+	@Column(name = "country")
 	private String country;
-	
-	@Column(name="latitude")
+
+	@Column(name = "latitude")
 	private Double latitude;
-	
-	@Column(name="longitude")
+
+	@Column(name = "longitude")
 	private Double longitude;
 
 	public Long getPkid() {
@@ -112,7 +110,5 @@ public class PHPlace implements PHEntity {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	
-	
-	
+
 }

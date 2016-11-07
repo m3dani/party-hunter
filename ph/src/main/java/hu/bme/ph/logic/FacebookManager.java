@@ -2,16 +2,12 @@ package hu.bme.ph.logic;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
-
-import org.w3c.dom.events.EventTarget;
 
 import facebook4j.Event;
 import facebook4j.Facebook;
@@ -31,33 +27,37 @@ import hu.bme.ph.model.PHPlace;
 public class FacebookManager {
 
 	private static final Logger logger = Logger.getLogger(FacebookManager.class.getName());
-	
+
 	@Inject
 	PHDao dao;
-	
+
 	private Facebook facebook;
-	
+
 	@PostConstruct
-	public void init(){
+	public void init() {
 		logger.info("init");
 		String appId = dao.getPreference("app_id");
 		String appSecret = dao.getPreference("app_secret");
 		String permissions = dao.getPreference("permissions");
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		  .setOAuthAppId(appId)
-		  .setOAuthAppSecret(appSecret)
-		  .setOAuthAccessToken(appId + "|" + appSecret)
-		  .setOAuthPermissions(permissions);
-		 // .setOAuthPermissions("email,publish_stream");
+		cb.setDebugEnabled(true).setOAuthAppId(appId).setOAuthAppSecret(appSecret).setOAuthAccessToken(appId + "|"
+				+ appSecret).setOAuthPermissions(permissions);
+		// .setOAuthPermissions("email,publish_stream");
 		FacebookFactory ff = new FacebookFactory(cb.build());
 		facebook = ff.getInstance();
 		logger.info("Facebook initialized with permissions: " + permissions);
 	}
-	
-	
-	public ResponseList<Place> requestPlaceFromFacebook(String query, Double latitude, Double longitude, int distance, String fields){
+
+	public ResponseList<Place> requestPlaceFromFacebook(String query, Double latitude, Double longitude, int distance,
+			String fields) {
 		try {
+			// default: akvárium klub official
+			if (latitude == null) {
+				latitude = 47.49836031485;
+			}
+			if (longitude == null) {
+				longitude = 19.054286954242;
+			}
 			ResponseList<Place> response = facebook.searchPlaces(query, new GeoLocation(latitude, longitude), distance, new Reading().fields(fields));
 			return response;
 		} catch (FacebookException e) {
@@ -66,9 +66,9 @@ public class FacebookManager {
 		}
 		return null;
 	}
-	
-	//TODO
-	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place){
+
+	// TODO
+	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place) {
 		try {
 			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, place, description"));
 			return response;
@@ -78,7 +78,7 @@ public class FacebookManager {
 		}
 		return null;
 	}
-	
+
 	public PHPlace parseFbPlace(Place place) {
 		PHPlace phplace = new PHPlace();
 		phplace.setFacebookId(place.getId());
@@ -90,36 +90,55 @@ public class FacebookManager {
 		phplace.setStreet(place.getLocation().getStreet());
 		return phplace;
 	}
-	
-	//TODO
+
+	// TODO
 	private PHEvent parseFbEvent(Event event, PHPlace place) {
 		PHEvent phevent = new PHEvent();
 		phevent.setPlace(place);
 		phevent.setDescription(event.getDescription());
-		phevent.setEndTime(event.getEndTime().toString());
+		if (event.getEndTime() != null) {
+			phevent.setEndTime(event.getEndTime().toString());
+		}
 		phevent.setName(event.getName());
 		phevent.setUpdated(event.getUpdatedTime().toString());
 		phevent.setStartTime(event.getStartTime().toString());
+
+		phevent.setIsHidden(false);
 		return phevent;
 	}
-	
-	public void mergePlacesToDb(List<PHPlace> placeList){
+
+	public void mergePlacesToDb(List<PHPlace> placeList) {
 		Map<String, PHPlace> placeMap = dao.getAllPlacesMap();
-		placeList.stream()
-			.forEach(p -> {
-				if (placeMap.containsKey(p.getFacebookId())) {
-					PHPlace exisitingPlace = placeMap.get(p.getFacebookId());
-					exisitingPlace.setName(p.getName());
-					exisitingPlace.setCity(p.getCity());
-					exisitingPlace.setCountry(p.getCountry());
-					exisitingPlace.setLatitude(p.getLatitude());
-					exisitingPlace.setLongitude(p.getLongitude());
-					exisitingPlace.setStreet(p.getStreet());
-					dao.save(exisitingPlace);
-				} else {
-					dao.save(p);
-				}
-			});
+		placeList.stream().forEach(p -> {
+			if (placeMap.containsKey(p.getFacebookId())) {
+				PHPlace exisitingPlace = placeMap.get(p.getFacebookId());
+				exisitingPlace.setName(p.getName());
+				exisitingPlace.setCity(p.getCity());
+				exisitingPlace.setCountry(p.getCountry());
+				exisitingPlace.setLatitude(p.getLatitude());
+				exisitingPlace.setLongitude(p.getLongitude());
+				exisitingPlace.setStreet(p.getStreet());
+				dao.save(exisitingPlace);
+			} else {
+				dao.save(p);
+			}
+		});
 	}
-	
+
+	public void savePlacesToDb() {
+		Map<String, PHPlace> placeMap = dao.getAllPlacesMap();
+		try {
+			for (String placeId : placeMap.keySet()) {
+				System.out.println(placeId);
+				for (Event event : facebook.getEvents(placeId, new Reading().fields("name, place, description, end_time, updated_time, start_time"))) {
+					PHEvent phe = parseFbEvent(event, placeMap.get(placeId));
+					dao.save(phe);
+				}
+			}
+		} catch (FacebookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }
