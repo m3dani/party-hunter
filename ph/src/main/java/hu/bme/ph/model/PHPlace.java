@@ -21,7 +21,7 @@ public class PHPlace implements PHEntity {
 	private static final long serialVersionUID = 8349053515992398803L;
 
 	@Id
-	@SequenceGenerator(name = "PLACE_PKID_GENERATOR", sequenceName = "PLACE_PKID_SEQ")
+	@SequenceGenerator(name = "PLACE_PKID_GENERATOR", sequenceName = "SEQ_PKID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PLACE_PKID_GENERATOR")
 	@Column(unique = true, nullable = false, name = "pkid")
 	private Long pkid;
