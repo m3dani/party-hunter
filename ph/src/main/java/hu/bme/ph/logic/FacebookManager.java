@@ -69,18 +69,6 @@ public class FacebookManager {
 		return null;
 	}
 
-	// TODO
-	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place) {
-		try {
-			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, place, description"));
-			return response;
-		} catch (FacebookException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public PHPlace parseFbPlace(Place place) {
 		PHPlace phplace = new PHPlace();
 		phplace.setFacebookId(place.getId());
@@ -113,19 +101,44 @@ public class FacebookManager {
 
 	private void saveEventsToDb() {
 		Map<String, PHPlace> placeMap = dao.getAllPlacesMap();
-		try {
-			List<PHEvent> events = new ArrayList<PHEvent>();
-			for (String placeId : placeMap.keySet()) {
-				for (Event event : facebook.getEvents(placeId, new Reading().fields("name, id, place, description, end_time, updated_time, start_time, attending_count"))) {
-					PHEvent phe = parseFbEvent(event, placeMap.get(placeId));
-					events.add(phe);
-				}
+		List<PHEvent> events = new ArrayList<PHEvent>();
+		for (String placeId : placeMap.keySet()) {
+			for (Event event : requestPlaceEventsFromFacebook(placeMap.get(placeId))) {
+				PHEvent phe = parseFbEvent(event, placeMap.get(placeId));
+				events.add(phe);
 			}
-			mergeEventsToDb(events);
+		}
+		mergeEventsToDb(events);
+	}
+
+	// TODO
+	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place) {
+		try {
+			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, id, place, description, end_time, updated_time, start_time, attending_count"));
+			return response;
 		} catch (FacebookException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	// TODO
+	private PHEvent parseFbEvent(Event event, PHPlace place) {
+		PHEvent phevent = new PHEvent();
+		phevent.setPlace(place);
+		phevent.setDescription(event.getDescription());
+		if (event.getEndTime() != null) {
+			phevent.setEndTime(event.getEndTime().toString());
+		}
+		phevent.setName(event.getName());
+		phevent.setUpdated(event.getUpdatedTime().toString());
+		phevent.setStartTime(event.getStartTime().toString());
+		phevent.setFacebookId(event.getId());
+
+		phevent.setAttendingCount(0);
+		phevent.setIsHidden(false);
+		return phevent;
 	}
 
 	private void mergeEventsToDb(List<PHEvent> eventList) {
@@ -150,23 +163,5 @@ public class FacebookManager {
 				dao.save(e);
 			}
 		});
-	}
-
-	// TODO
-	private PHEvent parseFbEvent(Event event, PHPlace place) {
-		PHEvent phevent = new PHEvent();
-		phevent.setPlace(place);
-		phevent.setDescription(event.getDescription());
-		if (event.getEndTime() != null) {
-			phevent.setEndTime(event.getEndTime().toString());
-		}
-		phevent.setName(event.getName());
-		phevent.setUpdated(event.getUpdatedTime().toString());
-		phevent.setStartTime(event.getStartTime().toString());
-		phevent.setFacebookId(event.getId());
-
-		phevent.setAttendingCount(0);
-		phevent.setIsHidden(false);
-		return phevent;
 	}
 }
