@@ -1,5 +1,6 @@
 package hu.bme.ph.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -51,13 +52,14 @@ public class FacebookManager {
 	public ResponseList<Place> requestPlaceFromFacebook(String query, Double latitude, Double longitude, int distance,
 			String fields) {
 		try {
-			// default: akvárium klub official
+			// default: akvarium klub official
 			if (latitude == null) {
 				latitude = 47.49836031485;
 			}
 			if (longitude == null) {
 				longitude = 19.054286954242;
 			}
+			// saveEventsToDb();
 			ResponseList<Place> response = facebook.searchPlaces(query, new GeoLocation(latitude, longitude), distance, new Reading().fields(fields));
 			return response;
 		} catch (FacebookException e) {
@@ -91,22 +93,6 @@ public class FacebookManager {
 		return phplace;
 	}
 
-	// TODO
-	private PHEvent parseFbEvent(Event event, PHPlace place) {
-		PHEvent phevent = new PHEvent();
-		phevent.setPlace(place);
-		phevent.setDescription(event.getDescription());
-		if (event.getEndTime() != null) {
-			phevent.setEndTime(event.getEndTime().toString());
-		}
-		phevent.setName(event.getName());
-		phevent.setUpdated(event.getUpdatedTime().toString());
-		phevent.setStartTime(event.getStartTime().toString());
-
-		phevent.setIsHidden(false);
-		return phevent;
-	}
-
 	public void mergePlacesToDb(List<PHPlace> placeList) {
 		Map<String, PHPlace> placeMap = dao.getAllPlacesMap();
 		placeList.stream().forEach(p -> {
@@ -125,20 +111,62 @@ public class FacebookManager {
 		});
 	}
 
-	public void savePlacesToDb() {
+	private void saveEventsToDb() {
 		Map<String, PHPlace> placeMap = dao.getAllPlacesMap();
 		try {
+			List<PHEvent> events = new ArrayList<PHEvent>();
 			for (String placeId : placeMap.keySet()) {
-				System.out.println(placeId);
-				for (Event event : facebook.getEvents(placeId, new Reading().fields("name, place, description, end_time, updated_time, start_time"))) {
+				for (Event event : facebook.getEvents(placeId, new Reading().fields("name, id, place, description, end_time, updated_time, start_time, attending_count"))) {
 					PHEvent phe = parseFbEvent(event, placeMap.get(placeId));
-					dao.save(phe);
+					events.add(phe);
 				}
 			}
+			mergeEventsToDb(events);
 		} catch (FacebookException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private void mergeEventsToDb(List<PHEvent> eventList) {
+		Map<String, PHEvent> eventMap = dao.getAllEventsMap();
+		eventList.stream().forEach(e -> {
+			if (eventMap.containsKey(e.getFacebookId())) {
+				PHEvent exisitingEvent = eventMap.get(e.getFacebookId());
+				exisitingEvent.setPlace(e.getPlace());
+				exisitingEvent.setDescription(e.getDescription());
+				if (e.getEndTime() != null) {
+					exisitingEvent.setEndTime(e.getEndTime().toString());
+				}
+				exisitingEvent.setName(e.getName());
+				exisitingEvent.setUpdated(e.getUpdated());
+				exisitingEvent.setStartTime(e.getStartTime());
+				exisitingEvent.setFacebookId(e.getFacebookId());
+
+				exisitingEvent.setAttendingCount(0);
+				exisitingEvent.setIsHidden(e.getIsHidden());
+				dao.save(exisitingEvent);
+			} else {
+				dao.save(e);
+			}
+		});
+	}
+
+	// TODO
+	private PHEvent parseFbEvent(Event event, PHPlace place) {
+		PHEvent phevent = new PHEvent();
+		phevent.setPlace(place);
+		phevent.setDescription(event.getDescription());
+		if (event.getEndTime() != null) {
+			phevent.setEndTime(event.getEndTime().toString());
+		}
+		phevent.setName(event.getName());
+		phevent.setUpdated(event.getUpdatedTime().toString());
+		phevent.setStartTime(event.getStartTime().toString());
+		phevent.setFacebookId(event.getId());
+
+		phevent.setAttendingCount(0);
+		phevent.setIsHidden(false);
+		return phevent;
+	}
 }

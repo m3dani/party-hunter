@@ -13,11 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "event")
+@NamedQueries({ @NamedQuery(name = "PHEvent.findAll", query = "SELECT e FROM PHEvent e ORDER BY e.name"), })
 public class PHEvent implements PHEntity {
 
 	/**
@@ -30,6 +33,9 @@ public class PHEvent implements PHEntity {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EVENT_PKID_GENERATOR")
 	@Column(unique = true, nullable = false, name = "pkid")
 	private Long pkid;
+
+	@Column(name = "facebook_id")
+	private String facebookId;
 
 	@Column(name = "name")
 	private String name;
@@ -78,6 +84,14 @@ public class PHEvent implements PHEntity {
 
 	public void setPkid(Long pkid) {
 		this.pkid = pkid;
+	}
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
 	}
 
 	public String getName() {
