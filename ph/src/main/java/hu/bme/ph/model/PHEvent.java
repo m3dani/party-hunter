@@ -23,9 +23,10 @@ import javax.persistence.Table;
 @Table(name = "event")
 @NamedQueries({ 
 	@NamedQuery(name = "PHEvent.findAll",
-			    query = "SELECT e FROM PHEvent e ORDER BY e.name"),
-	@NamedQuery(name = "PHEvent.findActualEvents",
-	            query = "SELECT event FROM PHEvent event WHERE 1=1 AND event.startTime >= current_date ORDER BY event.startTime")})
+			    query = "SELECT e FROM PHEvent e ORDER BY e.name")
+	}
+)
+
 public class PHEvent implements PHEntity {
 
 	/**

@@ -76,6 +76,7 @@ public class PHDao extends AbstractDao implements Serializable {
 		Query query = em.createQuery("SELECT event FROM PHEvent event WHERE 1=1 AND HOUR(event.startTime) >= 19 AND HOUR(event.endTime) <= 7 AND event.startTime BETWEEN ?1 AND ?2 ORDER BY event.startTime")
 				.setParameter(1, current_day, TemporalType.DATE)
 				.setParameter(2, next_day, TemporalType.DATE);
+		
 //		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
 		return query.getResultList();
 	}
