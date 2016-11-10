@@ -1,5 +1,6 @@
 package hu.bme.ph.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,7 +21,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "event")
-@NamedQueries({ @NamedQuery(name = "PHEvent.findAll", query = "SELECT e FROM PHEvent e ORDER BY e.name"), })
+@NamedQueries({ 
+	@NamedQuery(name = "PHEvent.findAll",
+			    query = "SELECT e FROM PHEvent e ORDER BY e.name"),
+	@NamedQuery(name = "PHEvent.findActualEvents",
+	            query = "SELECT event.name,event.start_time,event.end_time,place.name,place.country,place.city,place.street FROM PHEvent event,PHPlace place WHERE 1=1 start_time >= current_date AND current_date+1 > start_time AND date_part('hour', start_time) > 19 AND event.place_pkid = place.pkid ORDER BY start_time LIMIT 10")})
 public class PHEvent implements PHEntity {
 
 	/**
@@ -65,10 +70,10 @@ public class PHEvent implements PHEntity {
 	private int attendingCount;
 
 	@Column(name = "end_time")
-	private String endTime;
+	private Date endTime;
 
 	@Column(name = "start_time")
-	private String startTime;
+	private Date startTime;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "event_category_map", joinColumns = @JoinColumn(name = "event_pkid"), inverseJoinColumns = @JoinColumn(name = "category_pkid"))
@@ -166,11 +171,11 @@ public class PHEvent implements PHEntity {
 		this.attendingCount = attendingCount;
 	}
 
-	public String getEndTime() {
+	public Date getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(String endTime) {
+	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
 
@@ -182,11 +187,11 @@ public class PHEvent implements PHEntity {
 		this.place = place;
 	}
 
-	public String getStartTime() {
+	public Date getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(String startTime) {
+	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
 

@@ -60,7 +60,7 @@ public class FacebookManager {
 				longitude = 19.054286954242;
 			}
 			// saveEventsToDb();
-			ResponseList<Place> response = facebook.searchPlaces(query, new GeoLocation(latitude, longitude), distance, new Reading().fields(fields));
+			ResponseList<Place> response = facebook.searchPlaces(query, new GeoLocation(latitude, longitude), distance, new Reading().fields(fields).limit(100));
 			return response;
 		} catch (FacebookException e) {
 			// TODO Auto-generated catch block
@@ -114,7 +114,7 @@ public class FacebookManager {
 	// TODO
 	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place) {
 		try {
-			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, id, place, description, end_time, updated_time, start_time, attending_count"));
+			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, id, place, description, end_time, updated_time, start_time, attending_count").limit(100));
 			return response;
 		} catch (FacebookException e) {
 			// TODO Auto-generated catch block
@@ -156,7 +156,7 @@ public class FacebookManager {
 				exisitingEvent.setStartTime(e.getStartTime());
 				exisitingEvent.setFacebookId(e.getFacebookId());
 
-				exisitingEvent.setAttendingCount(0);
+				exisitingEvent.setAttendingCount(e.getAttendingCount());
 				exisitingEvent.setIsHidden(e.getIsHidden());
 				dao.save(exisitingEvent);
 			} else {
