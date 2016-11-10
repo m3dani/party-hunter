@@ -1,6 +1,8 @@
 package hu.bme.ph.dao;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +10,10 @@ import java.util.logging.Logger;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
@@ -62,7 +67,15 @@ public class PHDao extends AbstractDao implements Serializable {
 	
 	public List<PHEvent> getActualEventList() {
 		logger.info("getActualEventList called");
-		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
-		return q.getResultList();
+		Date current_day = new Date();
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(current_day);
+		cal.add(Calendar.DATE, 1);
+		Date next_day = cal.getTime();
+		Query query = em.createQuery("SELECT event FROM PHEvent event WHERE 1=1 AND HOUR(event.startTime) >= 19 AND HOUR(event.endTime) <= 7 AND event.startTime BETWEEN ?1 AND ?2 ORDER BY event.startTime")
+				.setParameter(1, current_day, TemporalType.DATE)
+				.setParameter(2, next_day, TemporalType.DATE);
+//		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
+		return query.getResultList();
 	}
 }
