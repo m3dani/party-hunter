@@ -44,7 +44,8 @@ public class EventsBean implements Serializable {
 	
 	public void refreshEvents() {
 		selectedEvent = new PHEvent();
-		eventList = dao.getAll(PHEvent.class);
+//		eventList = dao.getAll(PHEvent.class);
+		eventList = dao.getActualEventList();
 	}
 	
 	public void onRowCancel(RowEditEvent event) {

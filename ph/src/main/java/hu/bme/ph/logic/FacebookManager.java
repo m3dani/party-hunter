@@ -129,11 +129,11 @@ public class FacebookManager {
 		phevent.setPlace(place);
 		phevent.setDescription(event.getDescription());
 		if (event.getEndTime() != null) {
-			phevent.setEndTime(event.getEndTime().toString());
+			phevent.setEndTime(event.getEndTime());
 		}
 		phevent.setName(event.getName());
-		phevent.setUpdated(event.getUpdatedTime().toString());
-		phevent.setStartTime(event.getStartTime().toString());
+		phevent.setUpdated(event.getUpdatedTime());
+		phevent.setStartTime(event.getStartTime());
 		phevent.setFacebookId(event.getId());
 
 		phevent.setAttendingCount(0);
@@ -149,7 +149,7 @@ public class FacebookManager {
 				exisitingEvent.setPlace(e.getPlace());
 				exisitingEvent.setDescription(e.getDescription());
 				if (e.getEndTime() != null) {
-					exisitingEvent.setEndTime(e.getEndTime().toString());
+					exisitingEvent.setEndTime(e.getEndTime());
 				}
 				exisitingEvent.setName(e.getName());
 				exisitingEvent.setUpdated(e.getUpdated());

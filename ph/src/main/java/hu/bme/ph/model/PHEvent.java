@@ -25,7 +25,7 @@ import javax.persistence.Table;
 	@NamedQuery(name = "PHEvent.findAll",
 			    query = "SELECT e FROM PHEvent e ORDER BY e.name"),
 	@NamedQuery(name = "PHEvent.findActualEvents",
-	            query = "SELECT event.name,event.start_time,event.end_time,place.name,place.country,place.city,place.street FROM PHEvent event,PHPlace place WHERE 1=1 start_time >= current_date AND current_date+1 > start_time AND date_part('hour', start_time) > 19 AND event.place_pkid = place.pkid ORDER BY start_time LIMIT 10")})
+	            query = "SELECT event FROM PHEvent event WHERE 1=1 AND event.startTime >= current_date ORDER BY event.startTime")})
 public class PHEvent implements PHEntity {
 
 	/**
@@ -58,7 +58,7 @@ public class PHEvent implements PHEntity {
 	private String imageCoverUrl;
 
 	@Column(name = "updated")
-	private String updated;
+	private Date updated;
 
 	@Column(name = "created")
 	private String created;
@@ -139,11 +139,11 @@ public class PHEvent implements PHEntity {
 		this.imageCoverUrl = imageCoverUrl;
 	}
 
-	public String getUpdated() {
+	public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(String updated) {
+	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 

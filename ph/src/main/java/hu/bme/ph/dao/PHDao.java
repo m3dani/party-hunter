@@ -2,6 +2,7 @@ package hu.bme.ph.dao;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -57,5 +58,11 @@ public class PHDao extends AbstractDao implements Serializable {
 		});
 
 		return eventMap;
+	}
+	
+	public List<PHEvent> getActualEventList() {
+		logger.info("getActualEventList called");
+		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
+		return q.getResultList();
 	}
 }
