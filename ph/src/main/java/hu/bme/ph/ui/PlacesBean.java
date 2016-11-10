@@ -1,6 +1,7 @@
 package hu.bme.ph.ui;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ import org.primefaces.event.RowEditEvent;
 
 import hu.bme.ph.dao.PHDao;
 import hu.bme.ph.logic.FacebookManager;
+import hu.bme.ph.model.PHEvent;
 import hu.bme.ph.model.PHPlace;
 
 @Named(value = "placesBean")
@@ -40,6 +42,14 @@ public class PlacesBean implements Serializable{
 	
 	public void refreshPlaces() {
 		placeList = dao.getAll(PHPlace.class);
+	}
+	
+	public void syncPlaceEvents(PHPlace place) {
+		List<PHEvent> eventList = new ArrayList<>();
+		facebookManager.requestPlaceEventsFromFacebook(place).forEach(e -> {
+			eventList.add(facebookManager.parseFbEvent(e, place));
+		});
+		facebookManager.mergeEventsToDb(eventList);
 	}
 
 	public List<PHPlace> getPlaceList() {

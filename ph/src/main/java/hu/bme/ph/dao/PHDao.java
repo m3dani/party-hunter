@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import hu.bme.ph.model.AdminUser;
 import hu.bme.ph.model.PHEvent;
 import hu.bme.ph.model.PHPlace;
 import hu.bme.ph.model.PHPreference;
@@ -64,5 +65,9 @@ public class PHDao extends AbstractDao implements Serializable {
 		logger.info("getActualEventList called");
 		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
 		return q.getResultList();
+	}
+	
+	public void getUserByUserName() {
+		
 	}
 }
