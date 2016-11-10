@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+	<h:head>
+	</h:head>
+	
+	<h:body>
+		<h:form id="mainForm">
+			<p:growl id="msgs" showDetail="true"/>
+			
+			<p:dataTable id="eventsTable" var="event" 
+				value="#{eventsBean.eventList}" editable="true">
+				
+				<f:facet name="header">
+           			Events List
+       			</f:facet>
+				
+				<p:ajax event="rowEdit" listener="#{eventsBean.onRowEdit}" update=":mainForm:msgs" />
+       			<p:ajax event="rowEditCancel" listener="#{eventsBean.onRowCancel}" update=":mainForm:msgs" />
+       			
+       			<p:column headerText="Facebook id">
+		           <h:outputLabel value="#{event.facebookId}" />
+		       </p:column>
+		 
+		       <p:column headerText="Name">
+		           <h:outputLabel value="#{event.name}" />
+		           
+		       </p:column>
+		       
+<!-- 		       <p:column headerText="Description"> -->
+<!-- 		           <h:outputLabel value="#{event.description}" /> -->
+<!-- 		       </p:column> -->
+		       
+		       <p:column headerText="Start">
+		           <h:outputLabel value="#{event.startTime}" />
+		       </p:column>
+		       
+		       <p:column headerText="End">
+		           <h:outputLabel value="#{event.endTime}" />
+		       </p:column>
+		       
+		       <p:column headerText="Place name">
+		           <h:outputLabel value="#{event.place.name}" />
+		       </p:column>
+		       
+<!-- 		       <p:column headerText="Place address"> -->
+<!-- 		           <h:outputLabel value="#{event.place.city}, #{event.place.street}" /> -->
+<!-- 		       </p:column> -->
+		       <p:column style="width:32px;text-align: center">
+		       		<p:commandButton update=":mainForm:eventDetail" oncomplete="PF('detailDialog').show()" icon="ui-icon-search" title="View">
+		                <f:setPropertyActionListener value="#{event}" target="#{eventsBean.selectedEvent}" />
+		            </p:commandButton>
+		        </p:column>
+		       
+		       <f:facet name="footer">
+           			<p:commandButton id="refreshButton" value="Refresh" actionListener="#{eventsBean.refreshEvents}" update=":mainForm:eventsTable"/>
+       			</f:facet>
+       			
+			</p:dataTable>
+			
+			<p:dialog header="Event Info" widgetVar="detailDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        		<p:outputPanel id="eventDetail">
+        			<p:panelGrid  columns="2" rendered="#{not empty eventsBean.selectedEvent}" columnClasses="label,value">
+		                <f:facet name="header">
+<!-- 		                    <h:outputLabel value="Kep helye" />  -->
+		                </f:facet>
+		                
+		                <h:outputText value="Name" />
+		                <h:outputText value="#{eventsBean.selectedEvent.name}" />
+		                
+		                <h:outputText value="Description" />
+		                <h:outputText value="#{eventsBean.selectedEvent.description}" />
+		            </p:panelGrid>
+        		</p:outputPanel>
+        	</p:dialog>
+		</h:form>
+		
+		
+		
+		
+	</h:body>
+	
+</html>
