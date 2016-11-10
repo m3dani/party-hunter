@@ -74,6 +74,9 @@
 		       <p:column style="width:32px">
 		           <p:rowEditor />
 		       </p:column>
+		       <p:column>
+		       		<p:commandButton value="Sync events" actionListener="#{placesBean.syncPlaceEvents(place)}"/>
+		       </p:column>
 		       
 		       <f:facet name="footer">
            			<p:commandButton id="refreshButton" value="Refresh" actionListener="#{placesBean.refreshPlaces}" update=":mainForm:placesTable"/>

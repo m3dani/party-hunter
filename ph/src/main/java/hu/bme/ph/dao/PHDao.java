@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import hu.bme.ph.model.AdminUser;
 import hu.bme.ph.model.PHEvent;
 import hu.bme.ph.model.PHPlace;
 import hu.bme.ph.model.PHPreference;
@@ -77,5 +78,9 @@ public class PHDao extends AbstractDao implements Serializable {
 				.setParameter(2, next_day, TemporalType.DATE);
 //		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
 		return query.getResultList();
+	}
+	
+	public void getUserByUserName() {
+		
 	}
 }

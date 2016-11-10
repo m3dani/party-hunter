@@ -112,7 +112,7 @@ public class FacebookManager {
 	}
 
 	// TODO
-	private ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place) {
+	public ResponseList<Event> requestPlaceEventsFromFacebook(PHPlace place) {
 		try {
 			ResponseList<Event> response = facebook.getEvents(place.getFacebookId(), new Reading().fields("name, id, place, description, end_time, updated_time, start_time, attending_count").limit(100));
 			return response;
@@ -124,7 +124,7 @@ public class FacebookManager {
 	}
 
 	// TODO
-	private PHEvent parseFbEvent(Event event, PHPlace place) {
+	public PHEvent parseFbEvent(Event event, PHPlace place) {
 		PHEvent phevent = new PHEvent();
 		phevent.setPlace(place);
 		phevent.setDescription(event.getDescription());
@@ -141,7 +141,7 @@ public class FacebookManager {
 		return phevent;
 	}
 
-	private void mergeEventsToDb(List<PHEvent> eventList) {
+	public void mergeEventsToDb(List<PHEvent> eventList) {
 		Map<String, PHEvent> eventMap = dao.getAllEventsMap();
 		eventList.stream().forEach(e -> {
 			if (eventMap.containsKey(e.getFacebookId())) {
