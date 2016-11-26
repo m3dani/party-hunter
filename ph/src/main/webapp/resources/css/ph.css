@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+/* A 'nv-panelgrid-noborders' egy panelGrid-re teve kikapcsolja rajta a bordereket. */
+table.ui-panelgrid.nv-panelgrid-noborders > tbody > tr > td.ui-panelgrid-cell,
+table.ui-panelgrid.nv-panelgrid-noborders > tbody > tr {
+	border: 0px none;
+}

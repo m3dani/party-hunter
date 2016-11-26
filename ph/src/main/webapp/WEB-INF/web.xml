@@ -6,7 +6,7 @@
 
 	<display-name>PartyHunter</display-name>
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>signin.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
@@ -40,6 +40,15 @@
 	</context-param>
 
 
+	<context-param>
+	    <param-name>BootsFaces_USETHEME</param-name>
+	    <param-value>default</param-value>
+	</context-param>
+	
+	<context-param>
+	    <param-name>BootsFaces_THEME</param-name>
+	    <param-value>cerulean</param-value>
+	</context-param>
 
 	<context-param>
 		<param-name>primefaces.THEME</param-name>

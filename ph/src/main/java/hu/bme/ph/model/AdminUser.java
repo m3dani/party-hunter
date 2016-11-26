@@ -5,11 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="admin_user")
+@NamedQuery(name="AdminUser.findByName", query="SELECT u FROM AdminUser u WHERE u.username = :userName")
 public class AdminUser implements PHEntity {
 	
 	

@@ -14,7 +14,7 @@
 <!-- 		<from-view-id>/login.xhtml</from-view-id> -->
 <!-- 		<navigation-case> -->
 <!-- 			<from-action>#{loginBean.login()}</from-action> -->
-<!-- 			<from-outcome>places</from-outcome> -->
+<!-- 			<from-outcome>home</from-outcome> -->
 <!-- 			<to-view-id>home</to-view-id> -->
 <!-- 		</navigation-case> -->
 <!-- 	</navigation-rule> -->

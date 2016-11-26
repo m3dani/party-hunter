@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+	lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:b="http://bootsfaces.net/ui"
+    >
+    <h:head>
+        <title><ui:insert name="title">Party Hunter</ui:insert></title>
+        
+<!--    		<link rel="stylesheet" type="text/css" href="css/menu.css" /> -->
+
+       	<ui:insert name="head_content"></ui:insert>
+    </h:head>
+    <h:body style="padding: 60px;">
+    	<div class="pageContainer" >
+
+	        <div id="stickyHeader">
+		        <ui:include src="menubar.xhtml" />
+	        </div>
+	        <div id="content">
+	        	<ui:insert name="content"></ui:insert>
+	        </div>
+	        <div id="footer">
+	        	<ui:insert name="footer"></ui:insert>
+	        </div>
+	        <h:form id="globalForm">
+				<p:growl for="globalMessages" showDetail="true" life="10000" autoUpdate="true"  />
+			</h:form>
+		</div>
+    </h:body>
+</html>

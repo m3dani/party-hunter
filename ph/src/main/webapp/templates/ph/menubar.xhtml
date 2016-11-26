@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
+		<b:navBar brand="Party Hunter" brandHref="index.xhtml" fixed="top" inverse="true">
+            <b:navbarLinks>
+                <b:navLink value="Search" href="#"></b:navLink>
+                <b:navLink value="Events for me" href="#about"></b:navLink>
+                <b:navLink value="Places" href="#contact"></b:navLink>
+            </b:navbarLinks>
+            <b:navbarLinks pull="right">
+                <b:navLink value="#{loginBean.name}" href="#"></b:navLink>
+            </b:navbarLinks>
+        </b:navBar>
+</ui:composition>

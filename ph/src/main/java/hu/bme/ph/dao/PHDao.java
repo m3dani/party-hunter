@@ -78,10 +78,20 @@ public class PHDao extends AbstractDao implements Serializable {
 				.setParameter(2, next_day, TemporalType.DATE);
 		
 //		TypedQuery<PHEvent> q = em.createNamedQuery("PHEvent.findActualEvents", PHEvent.class);
-		return query.getResultList();
+		try {
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 	
-	public void getUserByUserName() {
-		
+	public AdminUser getUserByUserName(String userName) {
+		TypedQuery<AdminUser> q = em.createNamedQuery("AdminUser.findByName", AdminUser.class);
+		q.setParameter("userName", userName);
+		try {
+			return q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<link rel="stylesheet" type="text/css" href="resources/css/ph.css" />
+	</h:head>	
+
+	<h:body>
+		<p:spacer height="20" />
+		<h:form id="mainForm">
+			<p:outputPanel id="loginContainer">
+				<p:panelGrid columns="1" styleClass="nv-panelgrid-noborders">
+
+					<p:outputLabel value="Please enter your username and password" />
+					<p:spacer height="10" />
+					<p:panelGrid columns="2" styleClass="nv-panelgrid-noborders">
+						<h:outputLabel value="Username" styleClass="outPutLabel" />
+						<p:inputText id="userNameInput" value="#{loginBean.userName}" required="true"
+									 requiredMessage="Please enter your username" />
+
+						<h:outputLabel value="Password" styleClass="outPutLabel" />
+						<p:password id="passwordInput" value="#{loginBean.password}" required="true"
+									 requiredMessage="Please enter your password" />
+					</p:panelGrid>
+					<p:spacer height="10" />
+					<p:panelGrid columns="2" styleClass="nv-panelgrid-noborders" >
+						<p:commandButton id="loginButton" value="Login" action="#{loginBean.login()}" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</p:outputPanel>
+		</h:form>
+	</h:body>
+
+
+</html>
