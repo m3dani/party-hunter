@@ -29,8 +29,8 @@ public class SearchBean implements Serializable {
 	private static final Double BMElat = 47.4734564;
 	private static final Double BMElong = 19.0576992;
 	
-	private 
-	
+	private String distance;
+		
 	@Inject
 	PHDao dao;
 	
@@ -43,22 +43,22 @@ public class SearchBean implements Serializable {
 	public void doSearch() {
 		searchResultList = dao.getAll(PHEvent.class).stream()
 			.filter(e -> e.getStartTime().after(Calendar.getInstance().getTime()))
-			.filter(e -> e.getPlace().getCity().equals("Budapest"))
+			.filter(e -> distance(BMElat, BMElong, e.getPlace().getLatitude(), e.getPlace().getLongitude(), "m") < Double.parseDouble(distance))
 			.collect(Collectors.toList());
 	}
 	
-	private double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
-	      double theta = lon1 - lon2;
-	      double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+	private Double distance(Double lat1, Double lon1, Double lat2, Double lon2, String unit) {
+	      Double theta = lon1 - lon2;
+	      Double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
 	      dist = Math.acos(dist);
 	      dist = rad2deg(dist);
 	      dist = dist * 60 * 1.1515;
-	      if (unit == 'm') {
+	      if (unit == "m") {
 	        dist = dist * 1.609344 * 1000;
-	      } else if (unit == 'N') {
+	      } else if (unit == "N") {
 	        dist = dist * 0.8684;
 	        }
-	      return (dist);
+	      return dist;
 	    }
 
 	    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
@@ -75,4 +75,20 @@ public class SearchBean implements Serializable {
 	      return (rad * 180.0 / Math.PI);
 	    }
 	
+	    
+	    public String getDistance() {
+			return distance;
+		}
+
+		public void setDistance(String distance) {
+			this.distance = distance;
+		}
+
+		public List<PHEvent> getSearchResultList() {
+			return searchResultList;
+		}
+
+		public void setSearchResultList(List<PHEvent> searchResultList) {
+			this.searchResultList = searchResultList;
+		}
 }

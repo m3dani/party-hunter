@@ -9,9 +9,28 @@
 	<ui:define name="title">Party Hunter - Search</ui:define>
 	
 	<ui:define name="content">
-		<b:container>
-            
-        </b:container>
+		<h:form id="mainForm">
+			<b:container>
+	            <b:row>
+				    <b:column>
+				        <b:slider2 min="100" max="10000" span="7" value="#{searchBean.distance}" label="m" step="100"/>
+				    </b:column>
+				</b:row>
+				<b:row>
+					<b:commandButton value="Search" ajax="true" update=":mainForm" look="primary" actionListener="#{searchBean.doSearch}"/>
+				</b:row>
+				<b:row>
+					<b:dataTable value="#{searchBean.searchResultList}" var="event">
+						<b:dataTableColumn label="Name">
+							<h:outputText value="#{event.name}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn label="Start time">
+							<h:outputText value="#{event.startTime}" />
+						</b:dataTableColumn>
+					</b:dataTable>
+				</b:row>
+	        </b:container>
+        </h:form>
 	</ui:define>
 
 </ui:composition>
