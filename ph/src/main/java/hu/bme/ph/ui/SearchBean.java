@@ -11,6 +11,7 @@ import hu.bme.ph.model.PHEvent;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class SearchBean implements Serializable {
 	private static final Double BMElong = 19.0576992;
 	
 	private String distance;
-		
+
 	@Inject
 	PHDao dao;
 	
@@ -39,10 +40,11 @@ public class SearchBean implements Serializable {
 	
 	private List<PHEvent> searchResultList;
 	
+	private Date startTime = Calendar.getInstance().getTime();
 	
 	public void doSearch() {
 		searchResultList = dao.getAll(PHEvent.class).stream()
-			.filter(e -> e.getStartTime().after(Calendar.getInstance().getTime()))
+			.filter(e -> e.getStartTime().after(startTime))
 			.filter(e -> distance(BMElat, BMElong, e.getPlace().getLatitude(), e.getPlace().getLongitude(), "m") < Double.parseDouble(distance))
 			.collect(Collectors.toList());
 	}
@@ -90,5 +92,13 @@ public class SearchBean implements Serializable {
 
 		public void setSearchResultList(List<PHEvent> searchResultList) {
 			this.searchResultList = searchResultList;
+		}
+		
+		public Date getStartTime() {
+			return startTime;
+		}
+		
+		public void setStartTime(Date ts) {
+			startTime = ts;
 		}
 }

@@ -17,6 +17,12 @@
 				    </b:column>
 				</b:row>
 				<b:row>
+					<b:dateTimePicker
+				   value="#{searchBean.startTime}"
+				   label="Event starts after"
+				   render-label="true" />
+				</b:row>
+				<b:row>
 					<b:commandButton value="Search" ajax="true" update=":mainForm" look="primary" actionListener="#{searchBean.doSearch}"/>
 				</b:row>
 				<b:row>
@@ -26,6 +32,12 @@
 						</b:dataTableColumn>
 						<b:dataTableColumn label="Start time">
 							<h:outputText value="#{event.startTime}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn label="Place">
+							<h:outputText value="#{event.place.name}" />
+						</b:dataTableColumn>
+						<b:dataTableColumn label="Location">
+							<h:outputText value="#{event.place.street}" />
 						</b:dataTableColumn>
 					</b:dataTable>
 				</b:row>
